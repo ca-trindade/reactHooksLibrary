@@ -1,10 +1,12 @@
 import './App.css'
-import {useEffect, useState} from 'react';
+import {useEffect, useState, useRef, useReducer} from 'react';
 
 
 function App() {
     const [count, setCount] = useState(0);
     const [resourceType, setResourceType] = useState("post");
+    const [numberOfReloads, setnumberOfReloads] = useState("")
+
 
 //=== useState ==========================================
     const incrementCount = () => {
@@ -25,36 +27,70 @@ function App() {
     }, [resourceType])  // here is the list that useEffect uses as reference to reload if it's changes. Without a list [list, list] it will reload every time
     const changeResourceType = (resourceType) => {
         setResourceType(resourceType)
-    }
+    };
+//=======================================================
+
+//=== useRef ============================================
+
+//exemple 1
+
+    const numberOfRenders = useRef(0);
+    useEffect(() => {
+        numberOfRenders.current = numberOfRenders.current + 1;
+    });
+//exemple 2
+    const inputRef = useRef();
+const focusInput = () => {
+    inputRef.current.focus()
+}
+
+//=======================================================
+
+//=== useReducer ========================================
+
+
+
+
 
     return (
         <>
 
             <h1>React Hooks</h1>
             <div>
-            <h3>useState</h3>
-            <h2>{count}</h2>
-            <button onClick={incrementCount}>Increment</button>
-            <button onClick={decrementCount}>Decrement</button>
+                <h3>-useState-</h3>
+                <h2>{count}</h2>
+                <button onClick={incrementCount}>Increment</button>
+                <button onClick={decrementCount}>Decrement</button>
             </div>
+
             <div>
-                <h3>useEffect</h3>
+                <h3>-useEffect-</h3>
                 <h2>{resourceType}</h2>
                 <div>
-                    <button onClick={() => changeResourceType("posts")}>Posts*(check in console.log)</button>
-                    <button onClick={() => changeResourceType("comments")}>Comments*(check in console.log)</button>
-                    <button onClick={() => changeResourceType("todos")}>Todos*(check in console.log)</button>
+                    <button onClick={() => changeResourceType("posts")}>Posts*(check console.log)</button>
+                    <button onClick={() => changeResourceType("comments")}>Comments*(check console.log)</button>
+                    <button onClick={() => changeResourceType("todos")}>Todos*(check console.log)</button>
                 </div>
             </div>
 
+            <div>
+                <h3>-useRef-</h3>
+                <p>Exemple: 1</p>
+                <input ref={inputRef} value={numberOfReloads} onChange={(e) => setnumberOfReloads(e.target.value)}/>
+                <h2>This input with "{numberOfReloads}" have {numberOfRenders.current} reloads</h2>
+                <p>Exemple: 2</p>
+                <button onClick={focusInput}>useRef also used to focus</button>
+            </div>
+
+            <div>
+            <h3>-useReducer-</h3>
 
 
-            <h3>useRef</h3>
-            <h3>useReducer</h3>
-            <h3>useContext</h3>
-            <h3>useMemo</h3>
-            <h3>useCallback</h3>
-            <h3>useLayoutEffect</h3>
+            </div>
+            <h3>-useContext-</h3>
+            <h3>-useMemo-</h3>
+            <h3>-useCallback-</h3>
+            <h3>-useLayoutEffect-</h3>
         </>
     )
 }
